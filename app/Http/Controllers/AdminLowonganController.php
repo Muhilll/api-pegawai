@@ -83,7 +83,7 @@ class AdminLowonganController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Lowongan not found with id: '+$request->id,
+                'message' => 'Lowongan not found with id: '.$request->id,
             ], Response::HTTP_BAD_REQUEST);
 
         } catch (Exception $e) {
@@ -94,7 +94,7 @@ class AdminLowonganController extends Controller
         }
     }
 
-    public function hapusLowongan(Request $request){
+    public function deleteLowongan(Request $request){
         try{
             $request->validate([
                 'id' => 'required',
@@ -112,7 +112,7 @@ class AdminLowonganController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Lowongan not found with id: '+$request->id,
+                'message' => 'Lowongan not found with id: '.$request->id,
             ], Response::HTTP_BAD_REQUEST);
 
         } catch (Exception $e) {
