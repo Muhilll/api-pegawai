@@ -17,4 +17,10 @@ class Lowongan extends Model
         'deskripsi',
         'kualifikasi',
     ];
+
+    public function lamarans()
+    {
+        return $this->hasMany(Lamaran::class);
+    }
+    
 }

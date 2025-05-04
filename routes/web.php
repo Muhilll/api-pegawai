@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminLowonganController;
 use App\Http\Controllers\AdminSoalController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,3 +34,5 @@ Route::get('soal/batch/soal/get', [AdminSoalController::class, 'getSoal']);
 Route::get('soal/batch/soal/add', [AdminSoalController::class, 'addSoal']);
 Route::get('soal/batch/soal/edit', [AdminSoalController::class, 'editSoal']);
 Route::get('soal/batch/soal/delete', [AdminSoalController::class, 'deleteSoal']);
+
+
