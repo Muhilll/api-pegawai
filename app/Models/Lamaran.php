@@ -19,13 +19,14 @@ class Lamaran extends Model
         'cv',
     ];
 
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
-
     public function lowongan()
     {
-        return $this->belongsTo(Lowongan::class);
+        return $this->belongsTo(Lowongan::class, 'lowongan_id');
     }
+
+    protected $table = 'lamarans';
+
 }

@@ -51,28 +51,69 @@ class LamaranController extends Controller
         ]);
     }
 
-    public function getLamaranByUser(Request $request)
-    {
-        $userId = $request->query('user_id');
-        $lamaran = Lamaran::where('user_id', $userId)->get();
-    
-        return response()->json([
-            'success' => true,
-            'data' => $lamaran
-        ]);
-    }
-    
-    public function getByUser($user_id)
+    public function getLamaranByUser($userId)
 {
-    $data = Lamaran::with('lowongan')->where('user_id', $user_id)->get();
+    $lamaran = Lamaran::where('user_id', $userId)->get();
+    return response()->json($lamaran);
+}
+
+public function getByUser($id)
+{
+    $lamarans = Lamaran::where('user_id', $id)->with(['lowongan'])->get();
+    return response()->json($lamarans);
+
+    $lamaran = Lamaran::with('lowongan')->where('user_id', $id)->get();
+    return response()->json($lamaran);
+
+}
+
+
+public function cekLamaran(Request $request)
+{
+    $userId = $request->query('user_id');
+    $lowonganId = $request->query('lowongan_id');
+
+    if (!$userId || !$lowonganId) {
+        return response()->json([
+            'sudah_melamar' => false,
+            'message' => 'Parameter tidak lengkap'
+        ], 400);
+    }
+
+    $sudahMelamar = Lamaran::where('user_id', $userId)
+                    ->where('lowongan_id', $lowonganId)
+                    ->exists();
+
     return response()->json([
-        'success' => true,
-        'data' => $data
+        'sudah_melamar' => $sudahMelamar
     ]);
 }
 
-    
+public function getPendaftarByLowongan($id)
+{
+    $pendaftar = Lamaran::with('user')
+        ->where('lowongan_id', $id)
+        ->get();
 
-    
+    return response()->json([
+        'success' => true,
+        'data' => $pendaftar
+    ]);
+}
+
+
+// LamaranController.php
+public function getByLowongan($id)
+{
+    $pendaftar = \App\Models\Lamaran::with('user')
+                  ->where('lowongan_id', $id)
+                  ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $pendaftar
+    ]);
+}
+
 
 }

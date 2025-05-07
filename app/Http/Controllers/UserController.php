@@ -67,4 +67,17 @@ class UserController extends Controller
         ]);
         
     } 
+
+    public function getProfile(Request $request)
+{
+   
+    $user = $request->user(); 
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $user,
+    ]);
+}
+
+
 }
