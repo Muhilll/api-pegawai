@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('telepon');
             $table->string('pendidikan');
             $table->string('cv')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

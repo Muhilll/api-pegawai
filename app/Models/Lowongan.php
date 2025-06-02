@@ -16,6 +16,7 @@ class Lowongan extends Model
         'periode',
         'deskripsi',
         'kualifikasi',
+        'batch_soal_id'
     ];
 
     public function lamarans()

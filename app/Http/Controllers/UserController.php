@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
@@ -15,12 +15,12 @@ class UserController extends Controller
         // Validasi dan logika registrasi
         $validated = $request->validate([
             'nik' => 'required|unique:users,nik',
-            'nama' => 'required|string|max:255',
-            'alamat' => 'required|string',
-            'jkl' => 'required|string',
-            'no_hp' => 'required|string',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'jkl' => 'required',
+            'no_hp' => 'required',
             'username' => 'required|string|unique:users,username',
-            'password' => 'required|string|min:6',
+            'password' => 'required',
         ]);
     
         // Proses registrasi dan simpan data
@@ -44,8 +44,8 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+            'username' => 'required',
+            'password' => 'required',
         ]);
     
         $user = User::where('username', $request->username)->first();
@@ -65,19 +65,75 @@ class UserController extends Controller
                 'email' => $user->email,
             ]
         ]);
-        
     } 
 
-    public function getProfile(Request $request)
-{
-   
-    $user = $request->user(); 
+    public function getProfil(Request $request){
+        try{
+            $request->validate([
+                'id' => 'required',
+            ]);
 
-    return response()->json([
-        'status' => 'success',
-        'data' => $user,
-    ]);
-}
+            $dataUser = User::find($request->id);
+            if($dataUser){
 
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Successfull',
+                    'data' => $dataUser
+                ], Response::HTTP_OK);
+            } 
 
+            return response()->json([
+                'success' => false,
+                'message' => 'user not found with id: '.$request->id,
+            ], Response::HTTP_BAD_REQUEST);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed: ' . $e,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+    
+    public function updateProfil(Request $request){
+        try{
+            $request->validate([
+                'id' => 'required',
+                'nik' => 'required',
+                'nama' => 'required',
+                'alamat' => 'required',
+                'jkl' => 'required',
+                'no_hp' => 'required',
+            ]);
+
+            $user = User::find($request->id);
+            if(!$user) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'User tidak ditemukan dengan id '.$request->id
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $user->nik = $request->nik;
+            $user->nama = $request->nama;
+            $user->alamat = $request->alamat;
+            $user->jkl = $request->jkl;
+            $user->no_hp = $request->no_hp;
+            if ($request->password) {
+                $user->password = bcrypt($request->password);
+            }
+            $user->save();
+
+            return response()->json([
+                'success' => true, 
+                'message' => 'Profil berhasil diperbarui'
+                ], Response::HTTP_CREATED);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed: ' . $e->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

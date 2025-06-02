@@ -17,11 +17,13 @@ class Lamaran extends Model
         'telepon',
         'pendidikan',
         'cv',
+        'status'
     ];
 
     public function user() {
         return $this->belongsTo(User::class);
     }
+    
     public function lowongan()
     {
         return $this->belongsTo(Lowongan::class, 'lowongan_id');

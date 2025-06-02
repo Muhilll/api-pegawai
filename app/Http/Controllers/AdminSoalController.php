@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BatchSoal;
+use App\Models\Lowongan;
 use App\Models\Soal;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,6 +20,45 @@ class AdminSoalController extends Controller
                 'data' => $dataBatchSoal
             ]);
         } catch(BatchSoal $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed: ' . $e,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function getNameBatchByLowongan(Request $request){
+        try{
+            $request->validate([
+                'id' => 'required'
+            ]);
+
+            $lowongan = Lowongan::find($request->id);
+            if($lowongan){
+
+                $batchSoal = BatchSoal::find($lowongan->batch_soal_id);
+                if($batchSoal){
+
+                    return response()->json([
+                    'success' => true,
+                    'message' => 'Successfull',
+                    'data' => $batchSoal
+                ], Response::HTTP_OK);
+                }else{
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Batch soal not found with id: '.$lowongan->batch_soal_id,
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+            }else{
+
+                 return response()->json([
+                    'success' => false,
+                    'message' => 'Lowongan not found with id: '.$request->id,
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }catch(Exception $e){
             return response()->json([
                 'success' => false,
                 'message' => 'Failed: ' . $e,

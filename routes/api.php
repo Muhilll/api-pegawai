@@ -37,8 +37,3 @@ Route::get('lowongan/{id}/pendaftar', [LamaranController::class, 'getPendaftarBy
 Route::middleware('auth:sanctum')->get('/profile', [UserController::class, 'getProfile']);
 
 Route::get('/user-profile', [UserController::class, 'profile']);
-
-
-
-
-

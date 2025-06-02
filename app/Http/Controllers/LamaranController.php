@@ -11,7 +11,7 @@ class LamaranController extends Controller
     {
         // Validasi input
         $request->validate([
-            'cv' => 'required|file|mimes:pdf|max:2048', // Validasi file CV
+            'cv' => 'required|file|mimes:pdf',
             'user_id' => 'required|integer',
             'lowongan_id' => 'required|integer',
             'nama' => 'required|string',
@@ -21,7 +21,7 @@ class LamaranController extends Controller
         ]);
 
         // Logika untuk menyimpan lamaran
-        $cvPath = $request->file('cv')->store('cv', 'public'); // Menyimpan file CV
+        $cvPath = $request->file('cv')->store('cv', 'public');
 
         // Simpan data lamaran
         Lamaran::create([
@@ -31,7 +31,7 @@ class LamaranController extends Controller
             'email' => $request->email,
             'telepon' => $request->telepon,
             'pendidikan' => $request->pendidikan,
-            'cv_path' => $cvPath,
+            'cv' => $cvPath,
         ]);
 
         return response()->json(['message' => 'Lamaran berhasil dikirim']);
