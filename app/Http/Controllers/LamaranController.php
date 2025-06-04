@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hasil;
 use Illuminate\Http\Request;
 use App\Models\Lamaran; // Sesuaikan dengan model yang kamu gunakan
+use Exception;
+use Illuminate\Http\Response;
 
 class LamaranController extends Controller
 {
@@ -115,5 +118,28 @@ public function getByLowongan($id)
     ]);
 }
 
+    public function lihatHasilLamaran(Request $request){
+        try{
+            $request->validate([
+                'lamaran_id' => 'required'
+            ]);
 
+            $hasil = Hasil::where('lamaran_id', $request->lamaran_id)->first();
+            $dataHasil = [
+                'nama' => $hasil->lamaran->nama,
+                'skor' => $hasil->skor,
+                'status' => $hasil->status,
+            ];
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfull',
+                'data' => $dataHasil
+            ], Response::HTTP_OK);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed: ' . $e,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

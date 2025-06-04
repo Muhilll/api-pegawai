@@ -241,4 +241,50 @@ class AdminLowonganController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
     }
+
+    public function isLowonganBerakhir(Request $request){
+        try{
+            $request->validate([
+                'lowongan_id' => 'required'
+            ]);
+
+            $isLowonganBerakhir = false;
+            $lowongan = Lowongan::find($request->lowongan_id);
+            if($lowongan->selesai){
+                $isLowonganBerakhir = true;
+            }
+            return response()->json([
+                'success' => $isLowonganBerakhir,
+                'message' => 'Successful',
+            ], Response::HTTP_OK);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed: ' . $e,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function akhiriLowongan(Request $request){
+        try{
+            $request->validate([
+                'lowongan_id' => 'required'
+            ]);
+
+            $lowongan = Lowongan::find($request->lowongan_id);
+            $lowongan->selesai = true;
+            $lowongan->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfull',
+            ], Response::HTTP_CREATED);
+
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed: ' . $e,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

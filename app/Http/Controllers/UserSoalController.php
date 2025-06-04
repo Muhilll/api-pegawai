@@ -91,7 +91,7 @@ class UserSoalController extends Controller
             $skor = ($request->jum_benar / $soal) *  100;
 
             $status = "gagal";
-            if($skor >= 85){
+            if($skor >= 75){
                 $status = "lulus";
             }
 

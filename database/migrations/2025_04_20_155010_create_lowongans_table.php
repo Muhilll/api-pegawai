@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('deskripsi');
             $table->string('kualifikasi');
             $table->string('batch_soal_id')->nullable();
+            $table->boolean('selesai')->default(false);
             $table->timestamps();
         });
     }

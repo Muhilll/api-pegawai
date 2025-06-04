@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminLowonganController;
 use App\Http\Controllers\AdminSoalController;
+use App\Http\Controllers\LamaranController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSoalController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,7 @@ Route::post('pofil/update', [UserController::class, 'updateProfil']);
 Route::get('user/get/soal', [UserSoalController::class, 'getSoal']);
 Route::get('user/soal/cek', [UserSoalController::class, 'isSend']);
 Route::get('user/soal/send', [UserSoalController::class, 'sendJawaban']);
+Route::get('user/lamaran/hasil', [LamaranController::class, 'lihatHasilLamaran']);
 
 Route::get('lowongan/get', [AdminLowonganController::class, 'getLowongan']);
 Route::get('lowongan/add', [AdminLowonganController::class, 'addLowongan']);
@@ -36,6 +38,8 @@ Route::get('lowongan/delete', [AdminLowonganController::class, 'deleteLowongan']
 Route::get('lowongan/lamaran/acc', [AdminLowonganController::class, 'accLamaran']);
 Route::get('lowongan/lamaran/batch/get', [AdminLowonganController::class, 'getBatchSoal']);
 Route::get('lowongan/lamaran/mulai-seleksi', [AdminLowonganController::class, 'mulaiSeleksi']);
+Route::get('lowongan/lamaran/akhiri-lowongan/cek', [AdminLowonganController::class, 'isLowonganBerakhir']);
+Route::get('lowongan/lamaran/akhiri-lowongan', [AdminLowonganController::class, 'akhiriLowongan']);
 Route::get('lowongan/lamaran/lihat-hasil', [AdminLowonganController::class, 'lihatHasil']);
 
 Route::get('soal/batch/get', [AdminSoalController::class, 'getBatchSoal']);
