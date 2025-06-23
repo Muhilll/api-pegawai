@@ -19,7 +19,7 @@ class AdminSoalController extends Controller
                 'message' => 'Succesfull to get data batch soal',
                 'data' => $dataBatchSoal
             ]);
-        } catch(BatchSoal $e){
+        } catch(Exception $e){
             return response()->json([
                 'success' => false,
                 'message' => 'Failed: ' . $e,
